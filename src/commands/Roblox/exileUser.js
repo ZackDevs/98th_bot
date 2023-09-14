@@ -1,6 +1,6 @@
-const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder, Collection } = require("discord.js")
+const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder, Collection, WebhookClient } = require("discord.js")
 const noblox = require("noblox.js");
-const { groupID, rankNeeded } = require("../../../config.json")
+const { groupID, rankNeeded, "admin-logs-webhook": adminwebhook } = require("../../../config.json")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -47,9 +47,22 @@ module.exports = {
             .setTitle("Successfully exiled user!")
             .setColor("Green")
             .setTimestamp()
+            const logEmbed = new EmbedBuilder()
+                .setTitle(`Exile of a member`)
+                .addFields({
+                    name: "Moderator",
+                    value: `<@${interaction.user.id}>`,
+                    inline: true
+                }, {
+                    name: "Exiled user",
+                    value: username,
+                    inline: true
+                })
+            new WebhookClient({url: adminwebhook}).send({embeds: [logEmbed]})
             return interaction.reply({ embeds:[sucefullEmbed] })
         }
-        catch {
+        catch(err) {
+            console.log(err)
             return interaction.reply({ embeds: [errEmbed({ description: "Failed while exiling user.", title: "There was an error"})], ephemeral: true })
         }
 	}, 
