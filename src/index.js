@@ -1,6 +1,6 @@
-const { Client, GatewayIntentBits, Events, Collection} = require('discord.js');
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-const { TOKEN } = require("../config.json")
+const { Client, GatewayIntentBits, Events, Collection, WebhookClient} = require('discord.js');
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
+const { TOKEN, "admin-logs-webhook":adminwebhook } = require("../config.json")
 const { registerCommands, loadSlashCommands, registerEvents, loadFeatures, loadDBModels } = require("./util/register");
 
 client.on('ready', async () => {
