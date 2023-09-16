@@ -9,6 +9,6 @@ module.exports = {
      * @param {BaseInteraction} interaction 
      */
 	async execute({ interaction }) {
-        interaction.sdjsj()
+        interaction.send("Hello")
 	}, 
 };
