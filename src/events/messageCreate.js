@@ -10,12 +10,12 @@ module.exports = {
     async run(message) {
         if (message.channelId !== channelId) return
         if (message?.webhookId !== webhookId) return
+        if (message.embeds[0].data.description === "N/A") return await message.react("✅")
         const members = message.embeds[0].data.description.split("\n")
         let userids = await noblox.getIdFromUsername(members)
         userids = typeof userids === "number" ? [userids] : userids
         const alreadyGuest = [], exiled = [], failed = []
         for (let i = 0; i < userids.length; i++) {
-            console.log(members[i])
             if (await noblox.getRankNameInGroup(groupID, userids[i]) === "Guest") {
                 alreadyGuest.push(members[i])
                 continue 
