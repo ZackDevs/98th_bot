@@ -4,7 +4,7 @@ const fs = require("fs").promises;
 const path = require("path");
 
 const func = (async () => {
-    let browser = await puppeteer.launch({headless: false});
+    let browser = await puppeteer.launch();
     let page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36');
     await page.goto('https://roblox.com/login',
