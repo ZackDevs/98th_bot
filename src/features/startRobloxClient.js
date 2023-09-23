@@ -8,7 +8,7 @@ const func = async () => {
         console.log("[INFO] Logged in Roblox's account")
     }
     catch(err) {
-        func(await refresh())
+        console.log("[ERROR] Couldn't log in")
     }
 }
 
