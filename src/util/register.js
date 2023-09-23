@@ -36,7 +36,7 @@ function registerEvents(client, dir="../events") {
         }
     }
 }
-async function loadFeatures(dir="../features") {
+async function loadFeatures(dir="../features", client) {
     console.log("[INFO] Bot is registering Features!")
     const filePath = path.join(__dirname, dir);
     const files =  fs.readdirSync(filePath);
@@ -47,10 +47,10 @@ async function loadFeatures(dir="../features") {
             console.log("[INFO] Registering " + file)
             const fnc = require(path.join(filePath, file));
             if (isAsyncFunction(fnc)) {
-                await fnc();
+                !fnc.length ? await fnc() : await fnc(client)
             }
             else {
-                fnc()
+                !fnc.length ? fnc() : fnc(client)
             }
         }
     }

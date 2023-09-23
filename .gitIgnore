@@ -4,4 +4,4 @@ credentials.json
 token.json
 config.json
 config.prod.json
-test.json
+package.json
