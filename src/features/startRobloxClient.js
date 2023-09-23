@@ -1,11 +1,15 @@
 const noblox = require("noblox.js")
-const { COOKIE } = require("../../config.json") 
-module.exports = async () => {
+const { cookie } = require("../../test.json")
+const refresh = require("../useful")
+
+const func = async () => {
     try {
-        await noblox.setCookie(COOKIE)
+        await noblox.setCookie(cookie)
         console.log("[INFO] Logged in Roblox's account")
     }
-    catch {
-        console.log("[INFO] Error while logging in")
+    catch(err) {
+        func(await refresh())
     }
 }
+
+module.exports = func
