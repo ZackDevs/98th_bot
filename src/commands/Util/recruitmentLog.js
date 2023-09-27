@@ -48,7 +48,7 @@ module.exports = {
         })
         .setTimestamp()
         .setColor("Random")
-        await interaction.reply({embeds: [recruimentEmbed], allowedMentions: { "roles": [rankNeeded[0]] }, content: `<@&${rankNeeded}>`})
+        await interaction.reply({embeds: [recruimentEmbed], allowedMentions: { "roles": [rankNeeded[0]] }, content: `<@&${rankNeeded[0]}>`})
         return interaction.channel.send(prf)
     }, 
 };
