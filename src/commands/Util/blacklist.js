@@ -40,7 +40,7 @@ module.exports = {
             .addStringOption(option => 
                 option.setName("username").setDescription("Username of the user to blacklist").setRequired(true)    
             )    
-        ),
+        ).setDMPermission(false),
     /**
      * @param {Object} obj
      * @param {ChatInputCommandInteraction} obj.interaction 
@@ -118,7 +118,6 @@ module.exports = {
                         range: type === "wide" ? ranges[type][1]+`!A${rowNumber ? rowNumber+1 : rows[0][1]}:H${rowNumber ? rowNumber+1 : rows[0][1]}` : ranges[type][1]+`!B${rowNumber ? rowNumber+1 : rows[0][1]}:H${rowNumber ? rowNumber+1 : rows[0][1]}`,
                         valueInputOption: "USER_ENTERED",
                         resource: type === "wide" ? {"values": [[username[0].toUpperCase(), username ,"", reason, months ? `${months} months` : "Permanent", `${dateE.getMonth()+1}/${dateE.getDate()}/${dateE.getFullYear()}`, months_p_date ? `${months_p_date.getMonth()+1}/${months_p_date.getDate()}/${months_p_date.getFullYear()}` : `N/A`, appealable ? "Yes" : "No"]]} : {"values": [[ username, "", reason, months ? `${months} months` : "Permanent", `${dateE.getMonth()+1}/${dateE.getDate()}/${dateE.getFullYear()}`, months_p_date ? `${months_p_date.getMonth()+1}/${months_p_date.getDate()}/${months_p_date.getFullYear()}` : `N/A`, appealable ? "Yes" : "x"]]}
- 
                     })
                         // {"values": [[username[0].toUpperCase(), username, reason, months ? `${months} months` : "Permanent", `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`, months_p_date ? `${months_p_date.getMonth()+1}/${months_p_date.getDate()}/${months_p_date.getFullYear()}` : `N/A`, appealable ? "Yes" : "No"]]}
                 

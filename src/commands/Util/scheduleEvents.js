@@ -30,7 +30,7 @@ module.exports = {
             ).addStringOption(option => 
                 option.setName("time").setDescription("Time of the event - Format HH:MM AM/PM EST").setRequired(true)
             )            
-        ),
+        ).setDMPermission(false),
     /**
      * @param {ChatInputCommandInteraction} interaction 
      */
@@ -56,7 +56,7 @@ module.exports = {
             trello_res = await axios.get(`https://api.trello.com/1/boards/hpZgmMOY/cards?token=${trello_api_token}&key=${trello_api_key}`)
         }
         time = time.split(" ").slice(0, 2).join(" ")
-        const res = await interaction.client.models.get("verification").findOne({ userId: interaction.user.id })
+        const res = await interaction.client.cachedb.get("verification").find(e => e.userId === interaction.user.id)
         if (!res?.username) {
             return interaction.reply({ embeds: [errEmbed({ description: `You need to verify yourself before running this command.`, title: "Couldn't finish executing command" })], ephemeral: true})
         }

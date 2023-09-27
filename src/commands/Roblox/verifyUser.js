@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } = require("discord.js")
 const randomw = require("../../util/randomwords.json")
-const noblox = require("noblox.js")
+const noblox = require("noblox.js");
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('verify')
@@ -11,15 +11,18 @@ module.exports = {
     /**
      * @param {Object} obj
      * @param {ChatInputCommandInteraction} obj.interaction
-     * @param {import * from "../util/classes/Client.js";} obj.interaction.client
      * @param {Date} obj.date
      * @param {Object<String | Number>} obj.option
      * @param {Function} obj.errEmbed
      */
 	async execute({ interaction, date, options: { username }, errEmbed }) {
-        const res = await interaction.client.models.get("verification").findOne({userId: interaction.user.id})
+        const res = interaction.client.cachedb.get("verification").find(e => e.userId === interaction.user.id )
+        const userwithsameusername = interaction.client.cachedb.get("verification").find(e => e.username?.toLowerCase() === username.toLowerCase())
         if (res?.username) {
             return await interaction.reply({ embeds: [errEmbed({ description: `You're already verified as ${res.username}.`, title: "Couldn't finish excuting this command."})], ephemeral: true })
+        }
+        if (userwithsameusername) {
+            return await interaction.reply({ embeds: [errEmbed({ description: `There is someone already verified as ${userwithsameusername.username}`, title: "Couldn't finish excuting this command."})], ephemeral: true })
         }
         const user = await noblox.getIdFromUsername(username)
         if (!user) {
@@ -34,23 +37,17 @@ module.exports = {
             .setTimestamp()
             .setColor("Random")
             await interaction.reply({ embeds: [embed], ephemeral:true })
-            await interaction.client.models.get("verification").findOneAndUpdate({
-                userId: interaction.user.id
-            }, {
-                userId: interaction.user.id,
-                awaitingVerification: [user, randomwords.join(" ")]
-            }, {
-                upsert: true
-            })
+            await interaction.client.cachedb.get("verification").push({ userId: interaction.user.id, awaitingVerification: [user, randomwords], new: true, identifier: {userId: interaction.user.id} })
+            interaction.client.emit("db_log", interaction.client)
             return
         }
         const {awaitingVerification: [userid, rdwr]} = res
         const { blurb } = await noblox.getPlayerInfo(userid)
         const usrn = await noblox.getUsernameFromId(userid)
-        if (blurb !== rdwr) {
+        if (!rdwr.every(e => blurb.includes(e))) {
             const embed = new EmbedBuilder()
             .setTitle(`Verification of ${username}`)
-            .setDescription(`To verify yourself you need to go to your profile. [Click Here](https://www.roblox.com/users/${userid}/profile)\nThan please set your About Me with the following words.\n\n**${rdwr}**\n\nThan rerun the command and it should verify.`)
+            .setDescription(`To verify yourself you need to go to your profile. [Click Here](https://www.roblox.com/users/${userid}/profile)\nThan please set your About Me with the following words.\n\n**${rdwr.join(" ")}**\n\nThan rerun the command and it should verify.`)
             .setTimestamp()
             .setColor("Random")
             return await interaction.reply({ embeds: [embed], ephemeral:true })
@@ -61,12 +58,12 @@ module.exports = {
             .setTimestamp()
             .setColor("Random")
             await interaction.reply({ embeds: [successfull]})
-            await interaction.client.models.get("verification").findOneAndReplace({
-                userId: interaction.user.id,
-            }, {
-                userId: interaction.user.id,
-                username: usrn
-            })
+            res.username = usrn
+            res.new = true
+            res.identifier = { userId: interaction.user.id }
+            delete res.awaitingVerification
+            interaction.client.emit("db_log", interaction.client)
+            return
         }
         
         

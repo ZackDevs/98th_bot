@@ -8,7 +8,7 @@ module.exports = {
 		.setDescription('Exiles the user provided')
         .addStringOption(option => 
             option.setName("username").setDescription("Username of the member to exile.").setRequired(true)
-        ),
+        ).setDMPermission(false),
     /**
      * @param {Object} obj
      * @param {ChatInputCommandInteraction} obj.interaction
@@ -17,7 +17,7 @@ module.exports = {
      * @param {Function} obj.errEmbed
      */
 	async execute({ interaction, date, options: { username }, errEmbed }) {
-        const res = await interaction.client.models.get("verification").findOne({ userId: interaction.user.id })
+        const res = await interaction.client.cachedb.get('verification').find(e => e.userId === interaction.user.id)
         if (!res?.username) {
             return interaction.reply({ embeds: [errEmbed({ description: `You need to verify yourself before running this command.`, title: "Couldn't finish executing command" })], ephemeral: true})
         }

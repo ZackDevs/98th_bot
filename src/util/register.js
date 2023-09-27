@@ -36,7 +36,7 @@ function registerEvents(client, dir="../events") {
         }
     }
 }
-async function loadFeatures(dir="../features", client) {
+async function loadFeatures(client, dir="../features") {
     console.log("[INFO] Bot is registering Features!")
     const filePath = path.join(__dirname, dir);
     const files =  fs.readdirSync(filePath);
@@ -66,14 +66,50 @@ async function loadSlashCommands(client) {
     console.error(error);
     }
 }
-function loadDBModels(client, dir = '../util/models') {
+async function loadDBModels(client, dir = '../util/models') {
         const filePath = path.join(__dirname, dir);
         const files =  fs.readdirSync(filePath);
         for (const file of files) {
           if (file.endsWith('.js')) {
             const model = require(path.join(filePath, file));
               client.models.set(model.name, model.Model);
+              let rows = await model.Model.find()
+              client.cachedb.set(model.name, rows)
             }
           }
 }
-module.exports = { registerCommands, loadSlashCommands, registerEvents, loadFeatures, loadDBModels}
+
+function loadEverything(client) {
+    new Promise((resolve) => {
+        resolve(registerCommands(client))
+    }).then(console.log("[INFO] - Registered commands successfully!")).catch(err => {
+        console.log("[ERROR] - Error while registering commands")
+        console.log(err)
+    })
+    new Promise((resolve) => {
+        resolve(loadSlashCommands(client))
+    }).then(console.log("[INFO] - Loaded slash commands successfully!")).catch(err => {
+        console.log("[ERROR] - Error while loading slash commands")
+        console.log(err)
+    })
+    new Promise((resolve) => {
+        resolve(loadFeatures(client))
+    }).then(console.log("[INFO] - Loaded features successfully!")).catch(err => {
+        console.log("[ERROR] - Error while loading features")
+        console.log(err)
+    })
+    new Promise((resolve) => {
+        resolve(loadDBModels(client))
+    }).then(console.log("[INFO] - Loaded DB models successfully!")).catch(err => {
+        console.log("[ERROR] - Error while loading DB models")
+        console.log(err)
+    })
+    new Promise((resolve) => {
+        resolve(registerEvents(client))
+    }).then(console.log("[INFO] - Loaded events successfully!")).catch(err => {
+        console.log("[ERROR] - Error while loading events")
+        console.log(err)
+    })
+}
+
+module.exports = { loadEverything }
