@@ -6,6 +6,7 @@ module.exports = {
      * @param {ChatInputCommandInteraction} interaction 
      */
     async run(interaction) {
+        if (interaction.isModalSubmit()) return
         const date = Date.now()
         const command = interaction.client.commands.get(interaction.commandName);
         if (!command) {
