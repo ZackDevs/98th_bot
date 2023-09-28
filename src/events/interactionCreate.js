@@ -16,6 +16,7 @@ module.exports = {
         if (!interaction.isChatInputCommand() && !interaction.isAutocomplete()) {
             try {
                 await command.execute({ interaction, date, errEmbed });
+                return
             } catch (error) {
                 console.error(error);
                 if (interaction.replied || interaction.deferred) {
@@ -36,6 +37,7 @@ module.exports = {
             try {
                 const options = interaction.options._hoistedOptions.reduce((acc, cur) => ({...acc, [cur.name]: cur.type === 11 ? cur.attachment : cur.value }), {})
                 await command.execute({ interaction, options, date, errEmbed });
+                return
             } catch (error) {
                 console.error(error);
                 if (interaction.replied || interaction.deferred) {
