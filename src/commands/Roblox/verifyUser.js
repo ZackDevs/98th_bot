@@ -42,6 +42,7 @@ module.exports = {
             return
         }
         const {awaitingVerification: [userid, rdwr]} = res
+        if (!Array.isArray(rdwr)) rdwr = rdwr.split(" ")
         const { blurb } = await noblox.getPlayerInfo(userid)
         const usrn = await noblox.getUsernameFromId(userid)
         if (!rdwr.every(e => blurb.includes(e))) {
