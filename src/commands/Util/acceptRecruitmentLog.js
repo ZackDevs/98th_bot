@@ -33,15 +33,34 @@ module.exports = {
                 spreadsheetId: spreadsheetId,
                 range: `Database - Personnel Tracker!B11:D`,
             });
-            let rows = res.data.values.map(function(values, index) {return [...values, index+11]})
+            let originalrows = res.data.values.map(function(values, index) {return [...values, index+11]})
+            let rows
             if (type.toLowerCase().includes("tryout")) {
-                rows = rows.slice(rows.find(e => e.includes("RECRUITS"))[1]-9, rows.find(e => e.includes("CONSCRIPTS - UNOFFICIAL PERSONNEL"))[1]-12)
+                rows = originalrows.slice(originalrows.find(e => e.includes("RECRUITS"))[1]-9, originalrows.find(e => e.includes("CONSCRIPTS - UNOFFICIAL PERSONNEL"))[1]-12)
             } else {
-                rows = rows.slice(rows.find(e => e.includes("CONSCRIPTS - UNOFFICIAL PERSONNEL"))[1]-9, rows.length)
+                rows = originalrows.slice(originalrows.find(e => e.includes("CONSCRIPTS - UNOFFICIAL PERSONNEL"))[1]-9, originalrows.length)
             }
+
             const requests = []
             const ranges = []
             for (let i=0; i < names.length; i++) {
+                let equalName = originalrows.find(e => typeof e[1] !== "number" && e[1]?.toLowerCase() === names[i].toLowerCase())
+                if (equalName) {
+                    if (equalName[2] === rows[0][2]) continue
+                    if (equalName[2] === "Conscript") {
+                        const toRemove = {
+                            "deleteDimension": {
+                                "range": {
+                                    "dimension": "ROWS",
+                                    "startIndex": equalName[3]-1,
+                                    "endIndex": equalName[3],
+                                    "sheetId": sheetId
+                                }
+                            }
+                        }
+                        requests.push(toRemove)
+                    }
+                }
                 if (rows[0][1].localeCompare(names[i]) > 0) {
                     const addrowObject = {
                         "insertDimension": {
