@@ -41,7 +41,7 @@ module.exports = {
             interaction.client.emit("db_log", interaction.client)
             return
         }
-        const {awaitingVerification: [userid, rdwr]} = res
+        let {awaitingVerification: [userid, rdwr]} = res
         if (!Array.isArray(rdwr)) rdwr = rdwr.split(" ")
         const { blurb } = await noblox.getPlayerInfo(userid)
         const usrn = await noblox.getUsernameFromId(userid)
