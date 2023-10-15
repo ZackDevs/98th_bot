@@ -124,7 +124,7 @@ module.exports = {
                 "Recruit",
                 "",
                 `=IF(TEXTJOIN(" / ",TRUE,MAP('Database - Automation'!$F$9:$J$10, LAMBDA(x, IF(IFERROR(SEARCH(CInDeX,x),0) > 0,INDEX('Database - Automation'!$F$9:$J$10,1,COLUMN(x)-5),"")))) = "","N/A", TEXTJOIN(" / ",TRUE,MAP('Database - Automation'!$F$9:$J$10, LAMBDA(x, IF(IFERROR(SEARCH(CInDeX,x),0) > 0,INDEX('Database - Automation'!$F$9:$J$10,1,COLUMN(x)-5),"")))))`,
-                `=IF(AND(OR($LInDeX = "Active", $LInDeX > TODAY()), NOT($LInDeX = "EXEMPT")), IF(ISBLANK(CInDeX),"",SUM(COUNTA(IFERROR(FILTER('Database - Event Submissions'!$G$2:$G,'Database - Event Submissions'!$D$2:$D > $C$6, SEARCH(CInDeX, 'Database - Event Submissions'!$G$2:$G)))),COUNTA(IFERROR(FILTER('Database - Event Submissions'!$E$2:$E,'Database - Event Submissions'!$D$2:$D > $C$6, SEARCH(CInDeX, 'Database - Event Submissions'!$E$2:$E)))),COUNTA(IFERROR(FILTER('Database - Event Submissions'!$E$2:$E,'Database - Event Submissions'!$D$2:$D > $C$6, SEARCH(CInDeX, 'Database - Event Submissions'!$F$2:$F)))))), "EXEMPT")`,
+                `=IF(AND(OR($LInDeX = "Active", $LInDeX > TODAY()), NOT($LInDeX = "EXEMPT")), IF(ISBLANK(CInDeX),"",SUM(COUNTIFS('Database - Event Submissions'!B:B, "X", 'Database - Event Submissions'!D:D, ">"&$C$6, 'Database - Event Submissions'!E:E, "*"&CInDeX&"*"), COUNTIFS('Database - Event Submissions'!B:B, "X", 'Database - Event Submissions'!D:D, ">"&$C$6, 'Database - Event Submissions'!F:F, "*"&CInDeX&"*"), COUNTIFS('Database - Event Submissions'!B:B, "X", 'Database - Event Submissions'!D:D, ">"&$C$6, 'Database - Event Submissions'!G:G, "*"&CInDeX&"*"))), "EXEMPT")`,
                 `=SUM($GInDeX)`,
                 "",
                 0,
