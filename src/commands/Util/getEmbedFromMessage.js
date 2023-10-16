@@ -19,8 +19,23 @@ module.exports = {
         let embedJSON = []
         for (let i = 0; i < message.embeds.length; i++) {
             let json = message.embeds[i].toJSON()
+            if (json.footer) {
+                delete json.footer.proxy_icon_url
+            }
+            if (json.thumbnail) {
+                delete json.thumbnail.height
+                delete json.thumbnail.width
+                delete json.thumbnail.proxy_url
+            }
+            if (json.image) {
+                delete json.image.height
+                delete json.image.proxy_url
+                delete json.image.width
+            }
+            if (json.timestamp) {
+                delete json.timestamp
+            }
             delete json.type
-            
             embedJSON.push(json)
         }
         const atch = new AttachmentBuilder()
