@@ -1,7 +1,8 @@
 const { Events, Message, EmbedBuilder } = require("discord.js")
 const { errEmbed } = require("../util/easyEmbed")
 const noblox = require("noblox.js")
-const {groupID, channelId, webhookId} = require("../../config.json")
+const {groupID, channelId, webhookId, clanlabsCLAN, clanlabsTOKEN} = require("../../config.json")
+const axios = require("axios")
 module.exports = {
     name: Events.MessageCreate,
     /**
@@ -16,6 +17,19 @@ module.exports = {
         userids = typeof userids === "number" ? [userids] : userids
         const alreadyGuest = [], exiled = [], failed = []
         for (let i = 0; i < userids.length; i++) {
+            let res = await axios.get(`https://api.clanlabs.co/v1/users/${userids[i]}`, {headers: {
+                "auth": clanlabsTOKEN,
+                "clan": clanlabsCLAN,
+            }})
+            if (res.data.experience !== 0) {
+                while (res.data.experience !== 0) {
+                    res = await axios.post(`https://api.clanlabs.co/v1/users/${userids[i]}/experience/set/0`, {headers: {
+                        "auth": clanlabsTOKEN,
+                        "clan": clanlabsCLAN,
+                    }})
+                    console.log(res.data.experience)
+                }
+            }
             if (await noblox.getRankNameInGroup(groupID, userids[i]) === "Guest") {
                 alreadyGuest.push(members[i])
                 continue 
