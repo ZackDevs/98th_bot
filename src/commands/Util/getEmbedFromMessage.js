@@ -38,8 +38,13 @@ module.exports = {
             delete json.type
             embedJSON.push(json)
         }
+        const payload = {
+            "content": null,
+            "embeds": embedJSON,
+            "attachments": []
+          }
         const atch = new AttachmentBuilder()
-        .setFile(Buffer.from(JSON.stringify(embedJSON), "utf-8"))
+        .setFile(Buffer.from(JSON.stringify(payload), "utf-8"))
         .setName("text.txt")
         return interaction.reply({ files: [atch], ephemeral: true })
     }, 
