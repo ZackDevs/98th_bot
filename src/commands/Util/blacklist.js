@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder, WebhookClient } = require("discord.js")
 const { authorize } = require("../../util/authorizing")
 const { google } = require("googleapis")
-const { HC_rank, "admin-logs-webhook": adminwebhook } = require("../../../config.json");
+const { HC_rank, "admin-logs-webhook": adminwebhook, DDC_rank } = require("../../../config.json");
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('blacklist')
@@ -48,7 +48,7 @@ module.exports = {
      */
 	async execute({ interaction, date, options: { username, reason, appealable, months, type }, errEmbed }) {
         const roles = interaction.member.roles.cache
-        if (!roles.has(HC_rank)) return interaction.reply({ embeds: [errEmbed({ description: "You don't have permission to run this command", title: "Couldn't finish executing command"})], ephemeral: true })
+        if ([HC_rank, DDC_rank].some(s => roles.has(s))) return interaction.reply({ embeds: [errEmbed({ description: "You don't have permission to run this command", title: "Couldn't finish executing command"})], ephemeral: true })
         const ranges = {
             "wide": [231082353, "Enlistment"],
             "plane": [1295445251,"Plane Usage"],
