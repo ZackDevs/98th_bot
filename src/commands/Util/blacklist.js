@@ -48,7 +48,7 @@ module.exports = {
      */
 	async execute({ interaction, date, options: { username, reason, appealable, months, type }, errEmbed }) {
         const roles = interaction.member.roles.cache
-        if ([HC_rank, DDC_rank].some(s => roles.has(s))) return interaction.reply({ embeds: [errEmbed({ description: "You don't have permission to run this command", title: "Couldn't finish executing command"})], ephemeral: true })
+        if (![HC_rank, DDC_rank].some(s => roles.has(s))) return interaction.reply({ embeds: [errEmbed({ description: "You don't have permission to run this command", title: "Couldn't finish executing command"})], ephemeral: true })
         const ranges = {
             "wide": [231082353, "Enlistment"],
             "plane": [1295445251,"Plane Usage"],
