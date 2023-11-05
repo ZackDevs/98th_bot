@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } = require("discord.js")
-const { HC_rank, Staff_role, rankNeeded } = require("../../../config.json")
+const { HC_rank, Staff_role, rankNeeded, trialStaff } = require("../../../config.json")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -32,7 +32,7 @@ module.exports = {
      */
 	async execute({ interaction, date, options: { usernames, type, proof, attachment }, errEmbed }) {
         const roles = interaction.member.roles.cache
-        if (![HC_rank, Staff_role].some(s => roles.has(s))) return interaction.reply({ embeds: [errEmbed({ description: "You don't have permission to run this command", title: "Couldn't finish executing command"})], ephemeral: true })
+        if (![HC_rank, Staff_role, trialStaff].some(s => roles.has(s))) return interaction.reply({ embeds: [errEmbed({ description: "You don't have permission to run this command", title: "Couldn't finish executing command"})], ephemeral: true })
         if ([proof, attachment].every(s => !s)) return interaction.reply({ embeds: [errEmbed({ description: "You need to attach a proof or to send the url of the proof", title: "Couldn't finish executing command"})], ephemeral: true })
         const prf = attachment?.url ?? proof
         const recruimentEmbed = new EmbedBuilder()
