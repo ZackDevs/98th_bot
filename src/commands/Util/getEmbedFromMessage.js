@@ -35,6 +35,9 @@ module.exports = {
             if (json.timestamp) {
                 delete json.timestamp
             }
+            if (json.author) {
+                delete json.author.proxy_icon_url
+            }
             delete json.type
             embedJSON.push(json)
         }
