@@ -1,7 +1,7 @@
 const { ContextMenuCommandBuilder, MessageContextMenuCommandInteraction, EmbedBuilder, ApplicationCommandType } = require("discord.js")
-const { authorize } = require("../../util/authorizing")
+const { authorize } = require("../../../util/authorizing")
 const { google } = require("googleapis")
-const { rankNeeded, "recruitment-logs-channel": rsid } = require("../../../config.json");
+const { rankNeeded, "recruitment-logs-channel": rsid } = require("../../../../config.json");
 const spreadsheetId = "1I1zeMmoCdog_mM8RongRDSE5Cub5dRMAFeIip2dbjLo"
 const sheetId = 836943887
 module.exports = {

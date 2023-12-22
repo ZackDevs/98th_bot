@@ -1,7 +1,7 @@
 const { Events, MessageReaction, Message } = require("discord.js")
-const emojiLogHandle = require("../util/emojiLogHandle")
-const uploadTo = require("../util/uploadSourceb")
-const { serverID } = require("../../config.json")
+const emojiLogHandle = require("../../util/emojiLogHandle")
+const uploadTo = require("../../util/uploadSourceb")
+const { serverID } = require("../../../config.json")
 module.exports = {
     name: Events.MessageReactionRemoveAll,
     /**

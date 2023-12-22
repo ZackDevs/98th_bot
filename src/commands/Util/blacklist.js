@@ -127,8 +127,8 @@ module.exports = {
                 .setDescription(`**User:** ${username}\n**Reason:** ${reason}\n**Length of blacklist:** ${months ? `${months} months` : "Permanent"}\n**Appealable:** ${appealable ? "Yes" : "No"}`)
                 .setTimestamp()
                 .setColor("Green")
-                
-                logEmbed = new EmbedBuilder()
+
+                let logEmbed = new EmbedBuilder()
                 .setTitle(`Blacklist addition | For ${ranges[type][1]} blacklist`)
                 .addFields({
                     name: "Moderator",

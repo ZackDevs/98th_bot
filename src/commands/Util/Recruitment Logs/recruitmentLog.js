@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } = require("discord.js")
-const { HC_rank, Staff_role, rankNeeded, trialStaff } = require("../../../config.json")
+const { HC_rank, Staff_role, rankNeeded, trialStaff } = require("../../../../config.json")
 
 module.exports = {
 	data: new SlashCommandBuilder()

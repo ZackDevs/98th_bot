@@ -1,5 +1,6 @@
 const { Events, ChatInputCommandInteraction } = require("discord.js")
-const { errEmbed } = require("../util/easyEmbed") 
+const { errEmbed } = require("../util/easyEmbed")
+const errHandle = require("../util/errHandle");
 module.exports = {
     name: Events.InteractionCreate,
     /**
@@ -18,7 +19,7 @@ module.exports = {
                 await command.execute({ interaction, date, errEmbed });
                 return
             } catch (error) {
-                console.error(error);
+                errHandle(error, interaction.commandName)
                 if (interaction.replied || interaction.deferred) {
                     await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
                 } else {
@@ -31,7 +32,7 @@ module.exports = {
             try {
                 return await command.autocomplete(interaction);
             } catch (error) {
-                return console.error(error);
+                return errHandle(error, interaction.commandName)
             }
         }
             try {
@@ -39,7 +40,7 @@ module.exports = {
                 await command.execute({ interaction, options, date, errEmbed });
                 return
             } catch (error) {
-                console.error(error);
+                errHandle(error, interaction.commandName)
                 if (interaction.replied || interaction.deferred) {
                     await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
                 } else {

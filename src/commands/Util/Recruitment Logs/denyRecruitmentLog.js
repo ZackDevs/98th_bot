@@ -1,5 +1,5 @@
 const { ContextMenuCommandBuilder, MessageContextMenuCommandInteraction, EmbedBuilder, ApplicationCommandType, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, Embed } = require("discord.js")
-const { rankNeeded, "recruitment-logs-channel": rsid } = require("../../../config.json");
+const { rankNeeded, "recruitment-logs-channel": rsid } = require("../../../../config.json");
 module.exports = {
 	data: new ContextMenuCommandBuilder()
         .setName("deny-recruit-log")

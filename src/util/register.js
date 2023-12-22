@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const commands = []
 const { isAsyncFunction } = require('util/types');
+const errHandle = require("./errHandle")
 function registerCommands(client, dir = '../commands') {
         const filePath = path.join(__dirname, dir);
         const files =  fs.readdirSync(filePath);
@@ -63,7 +64,7 @@ async function loadSlashCommands(client) {
 
     console.log('Successfully reloaded application (/) commands.');
     } catch (error) {
-    console.error(error);
+        errHandle(error)
     }
 }
 async function loadDBModels(client, dir = '../util/models') {
@@ -84,31 +85,31 @@ function loadEverything(client) {
         resolve(registerCommands(client))
     }).then(console.log("[INFO] - Registered commands successfully!")).catch(err => {
         console.log("[ERROR] - Error while registering commands")
-        console.log(err)
+        errHandle(err)
     })
     new Promise((resolve) => {
         resolve(loadSlashCommands(client))
     }).then(console.log("[INFO] - Loaded slash commands successfully!")).catch(err => {
         console.log("[ERROR] - Error while loading slash commands")
-        console.log(err)
+        errHandle(err)
     })
     new Promise((resolve) => {
         resolve(loadFeatures(client))
     }).then(console.log("[INFO] - Loaded features successfully!")).catch(err => {
         console.log("[ERROR] - Error while loading features")
-        console.log(err)
+        errHandle(err)
     })
     new Promise((resolve) => {
         resolve(loadDBModels(client))
     }).then(console.log("[INFO] - Loaded DB models successfully!")).catch(err => {
         console.log("[ERROR] - Error while loading DB models")
-        console.log(err)
+        errHandle(err)
     })
     new Promise((resolve) => {
         resolve(registerEvents(client))
     }).then(console.log("[INFO] - Loaded events successfully!")).catch(err => {
         console.log("[ERROR] - Error while loading events")
-        console.log(err)
+        errHandle(err)
     })
 }
 
