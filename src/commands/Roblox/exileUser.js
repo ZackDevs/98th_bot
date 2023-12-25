@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder, Collection, WebhookClient } = require("discord.js")
 const noblox = require("noblox.js");
 const { groupID, rankNeeded, "admin-logs-webhook": adminwebhook } = require("../../../config.json")
+const errHandle = require("../../util/errHandle")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -16,7 +17,7 @@ module.exports = {
      * @param {Object<String | Number>} obj.option
      * @param {Function} obj.errEmbed
      */
-	async execute({ interaction, date, options: { username }, errEmbed }) {
+	async execute({ interaction, options: { username }, errEmbed }) {
         const res = await interaction.client.cachedb.get('verification').find(e => e.userId === interaction.user.id)
         if (!res?.username) {
             return interaction.reply({ embeds: [errEmbed({ description: `You need to verify yourself before running this command.`, title: "Couldn't finish executing command" })], ephemeral: true})
@@ -62,7 +63,7 @@ module.exports = {
             return interaction.reply({ embeds:[sucefullEmbed] })
         }
         catch(err) {
-            console.log(err)
+            errHandle(err, "exile")
             return interaction.reply({ embeds: [errEmbed({ description: "Failed while exiling user.", title: "There was an error"})], ephemeral: true })
         }
 	}, 

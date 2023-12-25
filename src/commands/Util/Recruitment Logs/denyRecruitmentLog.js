@@ -1,5 +1,6 @@
-const { ContextMenuCommandBuilder, MessageContextMenuCommandInteraction, EmbedBuilder, ApplicationCommandType, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, Embed } = require("discord.js")
+const { ContextMenuCommandBuilder, MessageContextMenuCommandInteraction, EmbedBuilder, ApplicationCommandType, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require("discord.js")
 const { rankNeeded, "recruitment-logs-channel": rsid } = require("../../../../config.json");
+const errHandle = require("../../../util/errHandle")
 module.exports = {
 	data: new ContextMenuCommandBuilder()
         .setName("deny-recruit-log")
@@ -9,7 +10,7 @@ module.exports = {
      * @param {MessageContextMenuCommandInteraction} obj.interaction 
      * @param {Date} obj.date
      */
-	async execute({ interaction, date, errEmbed }) {
+	async execute({ interaction, errEmbed }) {
         const message = interaction.targetMessage
         const fields = message?.embeds[0]?.fields.find(e => e.name === "Recruitees")?.value
         const reactions = message.reactions.cache
@@ -45,7 +46,7 @@ module.exports = {
             })
             message.edit({ embeds: [newEmbed] })
             message.react("❌")
-        }).catch((err) => {console.log(err)})
+        }).catch((err) => {errHandle(err, "deny-recruitment-log")})
 
     }, 
 };
