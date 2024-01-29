@@ -48,7 +48,12 @@ module.exports = {
             })
             message.edit({ embeds: [newEmbed] })
             message.react("❌")
-        }).catch((err) => {errHandle(err, "deny-recruitment-log")})
+        }).catch((err) => {
+            if (new Error(err).message.includes("Collector received no interactions before ending with reason: time")) {
+                console.log("meow")
+                return
+            } 
+            errHandle(err, "deny-recruitment-log")})
 
     }, 
 };
