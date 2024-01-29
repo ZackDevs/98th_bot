@@ -50,7 +50,6 @@ module.exports = {
             message.react("❌")
         }).catch((err) => {
             if (new Error(err).message.includes("Collector received no interactions before ending with reason: time")) {
-                console.log("meow")
                 return
             } 
             errHandle(err, "deny-recruitment-log")})
