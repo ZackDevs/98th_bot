@@ -3,6 +3,8 @@ const { HC_rank, Staff_role, trello_api_token, trello_api_key } = require("../..
 let choices = []
 let trello_res
 const axios = require("axios").default
+const { errEmbed } = new (require("../../util/easyEmbed"))()
+
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('events')
@@ -51,7 +53,7 @@ module.exports = {
      * @param {ChatInputCommandInteraction} obj.interaction 
      * @param {Date} obj.date
      */
-	async execute({ interaction, date, options: {event, date: dt_e, time}, errEmbed }) {
+	async execute({ interaction, date, options: {event, date: dt_e, time} }) {
         if (!choices.length) {
             trello_res = await axios.get(`https://api.trello.com/1/boards/hpZgmMOY/cards?token=${trello_api_token}&key=${trello_api_key}`)
         }

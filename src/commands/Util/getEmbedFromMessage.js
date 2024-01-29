@@ -1,5 +1,7 @@
 const { ContextMenuCommandBuilder, MessageContextMenuCommandInteraction, EmbedBuilder, ApplicationCommandType, AttachmentBuilder } = require("discord.js")
 const { HC_rank } = require("./../../../config.json")
+const { errEmbed } = new (require("../../util/easyEmbed"))()
+
 module.exports = {
 	data: new ContextMenuCommandBuilder()
         .setName("getembed")
@@ -9,7 +11,7 @@ module.exports = {
      * @param {MessageContextMenuCommandInteraction} obj.interaction 
      * @param {Date} obj.date
      */
-	async execute({ interaction, date, errEmbed }) {
+	async execute({ interaction, date }) {
         const roles = interaction.member.roles.cache
         if (!roles.has(HC_rank)) return interaction.reply({ embeds: [errEmbed({ description: "You don't have permission to run this command", title: "Couldn't finish executing command"})], ephemeral: true })
         const message = interaction.targetMessage

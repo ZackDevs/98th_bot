@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } = require("discord.js")
 const noblox = require("noblox.js");
 const { groupID } = require("../../../config.json")
+const { errEmbed } = new (require("../../util/easyEmbed"))()
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('get')
@@ -13,9 +14,8 @@ module.exports = {
      * @param {ChatInputCommandInteraction} obj.interaction
      * @param {Date} obj.date
      * @param {Object<String | Number>} obj.option
-     * @param {Function} obj.errEmbed
      */
-	async execute({ interaction, date, options: { username }, errEmbed }) {
+	async execute({ interaction, date, options: { username } }) {
         const usernames = username.replace(/,/g," ").split(" ").filter(e => e)
         if (usernames.length > 10) {
             return interaction.reply({ embeds: [errEmbed({ description: `The limit of ranks to check is 10 users.`, title: "Couldn't finish executing command" })], ephemeral: true})

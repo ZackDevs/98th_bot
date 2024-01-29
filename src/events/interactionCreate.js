@@ -1,5 +1,6 @@
 const { Events, ChatInputCommandInteraction } = require("discord.js")
-const { errEmbed } = require("../util/easyEmbed")
+const EasyEmbed = require("../util/easyEmbed")
+const { errEmbed } = new EasyEmbed()
 const errHandle = require("../util/errHandle");
 module.exports = {
     name: Events.InteractionCreate,

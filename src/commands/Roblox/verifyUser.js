@@ -1,6 +1,8 @@
 const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } = require("discord.js")
 const randomw = require("../../util/randomwords.json")
 const noblox = require("noblox.js");
+const { errEmbed } = new (require("../../util/easyEmbed"))()
+
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('verify')
@@ -13,9 +15,8 @@ module.exports = {
      * @param {ChatInputCommandInteraction} obj.interaction
      * @param {Date} obj.date
      * @param {Object<String | Number>} obj.option
-     * @param {Function} obj.errEmbed
      */
-	async execute({ interaction, date, options: { username }, errEmbed }) {
+	async execute({ interaction, date, options: { username } }) {
         const res = interaction.client.cachedb.get("verification").find(e => e.userId === interaction.user.id )
         const userwithsameusername = interaction.client.cachedb.get("verification").find(e => e.username?.toLowerCase() === username.toLowerCase())
         if (res?.username) {

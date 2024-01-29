@@ -4,6 +4,8 @@ const { google } = require("googleapis")
 const { rankNeeded, "recruitment-logs-channel": rsid } = require("../../../../config.json");
 const spreadsheetId = "1I1zeMmoCdog_mM8RongRDSE5Cub5dRMAFeIip2dbjLo"
 const sheetId = 836943887
+const { errEmbed } = new (require("../../../util/easyEmbed"))()
+
 module.exports = {
 	data: new ContextMenuCommandBuilder()
         .setName("accept-recruit-log")
@@ -13,7 +15,7 @@ module.exports = {
      * @param {MessageContextMenuCommandInteraction} obj.interaction 
      * @param {Date} obj.date
      */
-	async execute({ interaction, date, errEmbed }) {
+	async execute({ interaction, date }) {
         const message = interaction.targetMessage
         const fields = message?.embeds[0]?.fields.find(e => e.name === "Recruitees")?.value
         const reactions = message.reactions.cache

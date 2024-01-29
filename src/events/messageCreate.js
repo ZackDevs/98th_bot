@@ -1,5 +1,6 @@
 const { Events, Message, EmbedBuilder } = require("discord.js")
-const { errEmbed } = require("../util/easyEmbed")
+const EasyEmbed = require("../util/easyEmbed")
+const { errEmbed } = new EasyEmbed()
 const noblox = require("noblox.js")
 const {groupID, channelId, webhookId, clanlabsCLAN, clanlabsTOKEN} = require("../../config.json")
 const axios = require("axios")

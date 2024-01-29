@@ -2,6 +2,8 @@ const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder, WebhookC
 const { authorize } = require("../../util/authorizing")
 const { google } = require("googleapis")
 const { HC_rank, "admin-logs-webhook": adminwebhook, DDC_rank } = require("../../../config.json");
+const { errEmbed } = new (require("../../util/easyEmbed"))()
+
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('blacklist')
@@ -46,7 +48,7 @@ module.exports = {
      * @param {ChatInputCommandInteraction} obj.interaction 
      * @param {Date} obj.date
      */
-	async execute({ interaction, date, options: { username, reason, appealable, months, type }, errEmbed }) {
+	async execute({ interaction, date, options: { username, reason, appealable, months, type } }) {
         const roles = interaction.member.roles.cache
         if (![HC_rank, DDC_rank].some(s => roles.has(s))) return interaction.reply({ embeds: [errEmbed({ description: "You don't have permission to run this command", title: "Couldn't finish executing command"})], ephemeral: true })
         const ranges = {
@@ -56,6 +58,7 @@ module.exports = {
         }
         authorize().then(async auth => {
             const sheets = google.sheets({version: 'v4', auth});
+            let logEmbed
             switch (interaction.options._subcommand) {
                 case 'add':
                     const res = await sheets.spreadsheets.values.get({
@@ -128,7 +131,7 @@ module.exports = {
                 .setTimestamp()
                 .setColor("Green")
 
-                let logEmbed = new EmbedBuilder()
+                logEmbed = new EmbedBuilder()
                 .setTitle(`Blacklist addition | For ${ranges[type][1]} blacklist`)
                 .addFields({
                     name: "Moderator",
