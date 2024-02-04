@@ -64,7 +64,7 @@ module.exports = {
             }
         }
         else {
-            return interaction.reply({ embeds: [new EmbedBuilder().setTitle("Sent you the informations in dms").setDescription(`I've sent this [message](${msg.url}) to your dms.`).setColor("Green").setTimestamp()] })
+            return interaction.reply({ embeds: [new EmbedBuilder().setTitle("Sent you the informations in dms").setDescription(`I've sent this [message](${msg.url}) to your dms.`).setColor("Green").setTimestamp()], ephemeral: true })
         }
 
         
