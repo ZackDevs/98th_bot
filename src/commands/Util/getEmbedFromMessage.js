@@ -1,5 +1,6 @@
-const { ContextMenuCommandBuilder, MessageContextMenuCommandInteraction, EmbedBuilder, ApplicationCommandType, AttachmentBuilder } = require("discord.js")
-const { HC_rank } = require("./../../../config.json")
+const { ContextMenuCommandBuilder, MessageContextMenuCommandInteraction, EmbedBuilder, ApplicationCommandType, AttachmentBuilder, Embed } = require("discord.js")
+const { HC_rank } = require("./../../../config.json");
+const errHandle = require("../../util/errHandle");
 const { errEmbed } = new (require("../../util/easyEmbed"))()
 
 module.exports = {
@@ -51,6 +52,21 @@ module.exports = {
         const atch = new AttachmentBuilder()
         .setFile(Buffer.from(JSON.stringify(payload), "utf-8"))
         .setName("text.txt")
-        return interaction.reply({ files: [atch], ephemeral: true })
+        const msg = await interaction.user.send({ files: [atch] }).catch(e => [new Error(e)])
+        if (Array.isArray(msg)) {
+            const err = msg[0]
+            if (err.message.includes("Cannot send messages to this user")) {
+                return interaction.reply({ embeds: [errEmbed({ "description": "I can't send you a direct message.\nPlease allow users to send you DMs to run this command." , "title": "There was an error while exucting this command"})], ephemeral: true })
+            }
+            else {
+                errHandle(err, interaction.command.name)
+                return interaction.reply({ embeds: [errEmbed({ "description": "There was an unknown error, please inform JDLR about it." , "title": "There was an error while exucting this command"})], ephemeral: true })
+            }
+        }
+        else {
+            return interaction.reply({ embeds: [new EmbedBuilder().setTitle("Sent you the informations in dms").setDescription(`I've sent this [message](${msg.url}) to your dms.`).setColor("Green").setTimestamp()] })
+        }
+
+        
     }, 
 };
