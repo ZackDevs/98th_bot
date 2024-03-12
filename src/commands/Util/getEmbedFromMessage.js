@@ -22,6 +22,7 @@ module.exports = {
         let embedJSON = []
         for (let i = 0; i < message.embeds.length; i++) {
             let json = message.embeds[i].toJSON()
+            delete json.content_scan_version
             if (json.footer) {
                 delete json.footer.proxy_icon_url
             }
