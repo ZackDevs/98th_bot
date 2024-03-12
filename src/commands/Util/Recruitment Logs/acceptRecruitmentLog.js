@@ -22,6 +22,7 @@ module.exports = {
         if (interaction.channelId !== rsid || !interaction.targetMessage.embeds.length || !fields) return interaction.reply({ embeds: [errEmbed({ description: "Can't accept this because it isn't a recruitment log", title: "Couldn't accept this log" })], ephemeral: true })
         if (!rankNeeded.some(s => interaction.member.roles.cache.has(s))) return interaction.reply({ embeds: [errEmbed({ description: "You don't have permission to run this command", title: "Couldn't finish executing command"})], ephemeral: true })
         if (reactions.hasAny("❌", "✅")) return interaction.reply({ embeds: [errEmbed({ description: reactions.has("❌") ? "The recruitment log has been denied already." : "The recruitment log has been accepted already.", title: "Couldn't finish executing command"})], ephemeral: true })
+        await interaction.deferReply({ ephemeral: true})
         const names = fields.replace(/,/g," ").split(" ").filter(e => e).sort(function(a,b) {
             a = a.toLowerCase();
             b = b.toLowerCase();
@@ -181,7 +182,7 @@ module.exports = {
             .setFooter({ "text": "Don't forget to check the database." })
             .setTimestamp()
             .setColor("Green")
-            interaction.reply({ embeds: [embed], ephemeral: true })
+            interaction.editReply({ embeds: [embed], ephemeral: true })
             return interaction.targetMessage.react("✅")
 
 
